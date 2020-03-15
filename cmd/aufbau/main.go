@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+
+	"github.com/gin-contrib/cors"
 )
 
 func main() {
@@ -11,5 +13,6 @@ func main() {
 	}
 	engine := createEngine()
 	createRoutes(engine)
+	engine.Use(cors.Default())
 	engine.Run(":" + port)
 }

@@ -4,36 +4,48 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/alwindoss/aufbau"
 	"github.com/gin-gonic/gin"
 )
 
-func fetchConfigHandler(ctx *gin.Context) {
+func fetchConfigHandler(repository aufbau.Repository) gin.HandlerFunc {
 	log.Printf("serving from fetchConfigHandler")
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "fetchConfigHandler",
-	})
+	return func(c *gin.Context) {
+		repository.Fetch("", "", "")
+		c.JSON(http.StatusOK, gin.H{
+			"message": "fetchConfigHandler",
+		})
+	}
 }
-func fetchAllConfigsHandler(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "fetchAllConfigsHandler",
-	})
-
+func fetchAllConfigsHandler(repository aufbau.Repository) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		repository.FetchAll("", "")
+		c.JSON(http.StatusOK, gin.H{
+			"message": "fetchAllConfigsHandler",
+		})
+	}
 }
-func createConfigHandler(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "createConfigHandler",
-	})
-
+func createConfigHandler(repository aufbau.Repository) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		repository.Create(nil)
+		c.JSON(http.StatusOK, gin.H{
+			"message": "createConfigHandler",
+		})
+	}
 }
-func updateConfigHandler(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "updateConfigHandler",
-	})
-
+func updateConfigHandler(repository aufbau.Repository) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		repository.Update(nil)
+		c.JSON(http.StatusOK, gin.H{
+			"message": "updateConfigHandler",
+		})
+	}
 }
-func deleteConfigHandler(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "deleteConfigHandler",
-	})
-
+func deleteConfigHandler(repository aufbau.Repository) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		repository.Delete(nil)
+		c.JSON(http.StatusOK, gin.H{
+			"message": "deleteConfigHandler",
+		})
+	}
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -27,9 +28,28 @@ func fetchAllConfigsHandler(repository aufbau.Repository) gin.HandlerFunc {
 }
 func createConfigHandler(repository aufbau.Repository) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		repository.Create(nil)
-		c.JSON(http.StatusOK, gin.H{
-			"message": "createConfigHandler",
+		orgID := c.Param("org_id")
+		entityID := c.Param("entity_id")
+		// c.Request.Body
+		cfg := &aufbau.Configuration{}
+		err := json.NewDecoder(c.Request.Body).Decode(cfg)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		cfg.OrgID = orgID
+		cfg.EntityID = entityID
+		respCfg, err := repository.Create(cfg)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		c.JSON(http.StatusCreated, gin.H{
+			"config": respCfg,
 		})
 	}
 }

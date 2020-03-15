@@ -18,7 +18,7 @@ func main() {
 	}
 	engine := createEngine()
 	// connStr := "user=postgres dbname=aufbau sslmode=verify-false"
-	connStr := "postgres://postgres:OpenSesame@localhost/aufbau?sslmode=verify-false"
+	connStr := "postgres://postgres:OpenSesame@localhost:5433/aufbau?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)

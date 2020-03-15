@@ -18,9 +18,16 @@ type rdbmsRepository struct {
 	DB *sql.DB
 }
 
-func (r rdbmsRepository) Create(*aufbau.Configuration) (*aufbau.Configuration, error) {
+func (r rdbmsRepository) Create(cfg *aufbau.Configuration) (*aufbau.Configuration, error) {
+	sqlStatement := `
+INSERT INTO config (org_id, entity_id, config_id, config)
+VALUES ($1, $2, $3, $4)`
+	_, err := r.DB.Exec(sqlStatement, cfg.OrgID, cfg.EntityID, cfg.ConfigID, cfg.Config)
+	if err != nil {
+		return nil, err
+	}
 	log.Printf("creating configuration in the rdbms storage")
-	return nil, nil
+	return cfg, nil
 }
 
 func (r rdbmsRepository) Fetch(orgID, entityID, configID string) (*aufbau.Configuration, error) {

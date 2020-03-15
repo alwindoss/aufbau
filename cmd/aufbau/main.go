@@ -2,8 +2,6 @@ package main
 
 import (
 	"os"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -11,6 +9,7 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	engine := gin.Default()
+	engine := createEngine()
+	createRoutes(engine)
 	engine.Run(":" + port)
 }
